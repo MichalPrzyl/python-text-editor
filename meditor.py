@@ -69,7 +69,7 @@ def move_one_word_back():
     new_index = cursor_x
 
     while line[new_index] != ' ':
-        if new_index <= len(line) - 2:
+        if new_index > 0:
             new_index -= 1
         else:
             return new_index
