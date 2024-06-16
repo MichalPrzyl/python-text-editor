@@ -79,6 +79,12 @@ def get_max_line_index():
     line = text_buffer[cursor_y]
     return len(line) - 1
 
+def clear_command_prefix():
+    command_prefix_number = []
+    return command_prefix_number
+
+command_prefix_number = []
+
 # Główna pętla gry
 running = True
 while running:
@@ -102,20 +108,44 @@ while running:
             else:  # Add new chats
                 # NORMAL MODE
                 if mode == 'normal':
+                    if command_prefix_number:
+                        command_prefix_number_str = [str(el) for el in command_prefix_number]
+                        prefix = "".join(command_prefix_number_str)
+                    else:
+                        prefix = 1
+
                     if event.unicode == 'l':
-                        cursor_x = move_right(cursor_x)
+                        for _ in range(int(prefix)):
+                            cursor_x = move_right(cursor_x)
+                        command_prefix_number = clear_command_prefix()
+
                     elif event.unicode == 'h':
-                        cursor_x = move_left(cursor_x)
+                        for _ in range(int(prefix)):
+                            cursor_x = move_left(cursor_x)
+                        command_prefix_number = clear_command_prefix()
+
                     elif event.unicode == 'j':
-                        cursor_y = move_down(cursor_y)
+                        for _ in range(int(prefix)):
+                            cursor_y = move_down(cursor_y)
+                        command_prefix_number = clear_command_prefix()
+
                     elif event.unicode == 'k':
-                        cursor_y = move_up(cursor_y)
+                        for _ in range(int(prefix)):
+                            cursor_y = move_up(cursor_y)
+                        command_prefix_number = clear_command_prefix()
+                        
                     elif event.unicode == 'i':
                         mode = 'insert'
+
                     elif event.unicode == 'w':
-                        cursor_x = move_one_word_forward()
+                        for _ in range(int(prefix)):
+                            cursor_x = move_one_word_forward()
+                        command_prefix_number = clear_command_prefix()
+                        
                     elif event.unicode == 'b':
-                        cursor_x = move_one_word_back()
+                        for _ in range(int(prefix)):
+                            cursor_x = move_one_word_back()
+                        command_prefix_number = clear_command_prefix()
                     elif event.unicode == 'o':
                         text_buffer.insert(cursor_y + 1, "")
                         cursor_y = move_down(cursor_y)
@@ -127,6 +157,11 @@ while running:
                         cursor_x = 0
                     elif event.unicode == '$':
                         cursor_x = get_max_line_index()
+                    elif pygame.K_0 <= event.key <= pygame.K_9:
+                        # print(f"event.key: {event.key}")
+                        pressed_number = event.key - pygame.K_0
+                        command_prefix_number.append(pressed_number)
+
 
                 # INSERT MODE
                 elif mode == 'insert':
@@ -141,7 +176,6 @@ while running:
                         if not text_buffer:
                             text_buffer.append("")
                         text_buffer[cursor_y] = text_buffer[cursor_y][:cursor_x] + event.unicode + text_buffer[cursor_y][cursor_x:]
-                        # move_right(cursor_x)
                         cursor_x = move_right(cursor_x)
 
     # Background fill
@@ -162,9 +196,6 @@ while running:
 
     if True:
         cursor_color = (50, 168, 82)
-        # print(f"cursor_x: {cursor_x}")
-        # print(f"cursor_y: {cursor_y}")
-        # print(f"text_buffer: {text_buffer}")
         cursor_x_to_draw = font.size(text_buffer[cursor_y][:cursor_x])
         cursor_y_to_draw = cursor_y * font_height + 10
         pygame.draw.rect(screen, cursor_color, (cursor_x_to_draw[0] + 10, cursor_y_to_draw, 10, font_height))
@@ -179,6 +210,13 @@ while running:
         status_line_text_surface, 
         (0 + 10, screen_height - status_line_height + status_line_height/5))
 
+    # draw command prefix number
+    command_display_text_surface = status_line_font.render(f'command: {command_prefix_number}', True, status_line_text_color)
+    screen.blit(
+        command_display_text_surface, 
+        (screen_width - 250, screen_height - status_line_height + status_line_height/5))
+
+    
 
     # Update screen
     pygame.display.flip()
