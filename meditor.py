@@ -87,6 +87,11 @@ while running:
                         cursor_y = move_up(cursor_y)
                     elif event.unicode == 'i':
                         mode = 'insert'
+                    elif event.unicode == 'o':
+                        text_buffer.insert(cursor_y + 1, "")
+                        cursor_y = move_down(cursor_y)
+                        cursor_x = 0
+                        mode = "insert"
 
                 # INSERT MODE
                 elif mode == 'insert':
