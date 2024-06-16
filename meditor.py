@@ -22,6 +22,12 @@ mode = 'normal'
 # Buffor
 text_buffer = ['hejka naklejka co tam ciekawego', "hejk"]
 
+# Status line
+status_line_text_color = (31, 31, 31)
+status_line_color = (131, 143, 134)
+status_line_height = 20
+
+# Tick
 last_blink_time = pygame.time.get_ticks()
 cursor_blink_interval = 500
 cursor_visible = True
@@ -112,13 +118,11 @@ while running:
         pygame.draw.rect(screen, cursor_color, (cursor_pos_lol[0] + 10, cursor_y, 10, font_height))
 
     # draw status line
-    status_line_color = (131, 143, 134)
-    status_line_height = 20
     pygame.draw.rect(screen, status_line_color, (0, screen_height - status_line_height,
                                                  screen_width, status_line_height))
     
     status_line_font =  pygame.font.Font(None, 20)
-    status_line_text_surface = status_line_font.render(f'mode: {mode}', True, text_color)
+    status_line_text_surface = status_line_font.render(f'mode: {mode}', True, status_line_text_color)
     screen.blit(
         status_line_text_surface, 
         (0 + 10, screen_height - status_line_height + status_line_height/5))
