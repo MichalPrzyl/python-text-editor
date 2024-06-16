@@ -83,18 +83,16 @@ while running:
                     elif event.unicode == 'i':
                         mode = 'insert'
 
-
                 # INSERT MODE
                 elif mode == 'insert':
                     if event.key == pygame.K_ESCAPE:
                         mode = 'normal'
-
-                    if not text_buffer:
-                        text_buffer.append("")
-                    # text_buffer[cursor_pos[1]].insert(cursor_pos[0], event.unicode)
-                    # text_buffer[cursor_pos[1]] = text_buffer[cursor_pos[1]][:cursor_pos[0]] + event.unicode + text_buffer[cursor_pos[1]][cursor_pos[0]:]
-                    # move_right(cursor_pos)
-                    
+                    else:
+                        if not text_buffer:
+                            text_buffer.append("")
+                        text_buffer[cursor_y] = text_buffer[cursor_y][:cursor_x] + event.unicode + text_buffer[cursor_y][cursor_x:]
+                        # move_right(cursor_x)
+                        cursor_x = move_right(cursor_x)
 
     # Background fill
     screen.fill(background_color)
