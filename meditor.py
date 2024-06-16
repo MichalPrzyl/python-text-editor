@@ -63,7 +63,8 @@ while running:
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:  # Return key
-                text_buffer.insert(cursor_y + 1, "")
+                text_buffer.insert(cursor_y + 1, text_buffer[cursor_y][cursor_x:])
+                text_buffer[cursor_y] = text_buffer[cursor_y][:cursor_x]
                 cursor_y = move_down(cursor_y)
                 cursor_x = 0
             elif event.key == pygame.K_BACKSPACE:  # Backspace key
