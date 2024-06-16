@@ -75,6 +75,9 @@ def move_one_word_back():
             return new_index
     return new_index - 1
     
+def get_max_line_index():
+    line = text_buffer[cursor_y]
+    return len(line) - 1
 
 # Główna pętla gry
 running = True
@@ -113,7 +116,6 @@ while running:
                         cursor_x = move_one_word_forward()
                     elif event.unicode == 'b':
                         cursor_x = move_one_word_back()
-
                     elif event.unicode == 'o':
                         text_buffer.insert(cursor_y + 1, "")
                         cursor_y = move_down(cursor_y)
@@ -121,7 +123,10 @@ while running:
                         mode = "insert"
                     elif event.unicode == '0':
                         cursor_x = 0
-
+                    elif event.unicode == '^':
+                        cursor_x = 0
+                    elif event.unicode == '$':
+                        cursor_x = get_max_line_index()
 
                 # INSERT MODE
                 elif mode == 'insert':
@@ -129,7 +134,9 @@ while running:
                         mode = 'normal'
                     elif event.key == pygame.K_RSHIFT:
                         pass
-
+                    elif event.key == pygame.K_TAB:
+                        text_buffer[cursor_y] = text_buffer[cursor_y][:cursor_x] + '    ' + text_buffer[cursor_y][cursor_x:]
+                        cursor_x += 4
                     else:
                         if not text_buffer:
                             text_buffer.append("")
