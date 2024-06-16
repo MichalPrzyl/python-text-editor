@@ -69,7 +69,9 @@ while running:
                 cursor_x = 0
             elif event.key == pygame.K_BACKSPACE:  # Backspace key
                 if text_buffer and text_buffer[-1]:
-                    text_buffer[cursor_y] = text_buffer[cursor_y][:-1]
+                    text_buffer[cursor_y] = text_buffer[cursor_y][:cursor_x - 1] + text_buffer[cursor_y][cursor_x:]
+                    cursor_x = move_left(cursor_x)
+
                 elif text_buffer:
                     text_buffer.pop()
             else:  # Add new chats
