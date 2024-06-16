@@ -62,7 +62,6 @@ while running:
                 elif text_buffer:
                     text_buffer.pop()
             else:  # Add new chats
-                
                 # NORMAL MODE
                 if mode == 'normal':
                     if event.unicode == 'l':
@@ -73,9 +72,15 @@ while running:
                         cursor_pos = move_down(cursor_pos)
                     elif event.unicode == 'k':
                         cursor_pos = move_up(cursor_pos)
+                    elif event.unicode == 'i':
+                        mode = 'insert'
+
 
                 # INSERT MODE
                 elif mode == 'insert':
+                    if event.key == pygame.K_ESCAPE:
+                        mode = 'normal'
+
                     if not text_buffer:
                         text_buffer.append("")
                     text_buffer[-1] += event.unicode
@@ -97,7 +102,7 @@ while running:
         last_blink_time = pygame.time.get_ticks()
         print(f"cursor_pos: {cursor_pos}")
 
-    if cursor_visible:
+    if True:
         cursor_color = (50, 168, 82)
 
         cursor_pos_lol = font.size(text_buffer[cursor_pos[1]][:cursor_pos[0]])
@@ -114,8 +119,9 @@ while running:
     
     status_line_font =  pygame.font.Font(None, 20)
     status_line_text_surface = status_line_font.render(f'mode: {mode}', True, text_color)
-    screen.blit(status_line_text_surface, (0 + 10, 
-                                           screen_height - status_line_height + status_line_height/5))
+    screen.blit(
+        status_line_text_surface, 
+        (0 + 10, screen_height - status_line_height + status_line_height/5))
 
 
     # Update screen
