@@ -107,6 +107,9 @@ while running:
 
                 elif text_buffer:
                     text_buffer.pop()
+            elif event.key == pygame.K_DELETE:  # Delete key
+                text_buffer[cursor_y] = text_buffer[cursor_y][:cursor_x] + text_buffer[cursor_y][cursor_x + 1 :]
+                
             else:  # Add new chats
                 # NORMAL MODE
                 if mode == 'normal':
@@ -164,7 +167,6 @@ while running:
                         pressed_number = event.key - pygame.K_0
                         command_prefix_number.append(pressed_number)
 
-
                 # INSERT MODE
                 elif mode == 'insert':
                     if event.key == pygame.K_ESCAPE:
@@ -197,10 +199,15 @@ while running:
         last_blink_time = pygame.time.get_ticks()
 
     if True:
+        try:
+            letter = text_buffer[cursor_y][cursor_x]
+        except IndexError:
+            letter = 'o'
+        letter_width, _ = font.size(letter)
         cursor_color = (50, 168, 82)
         cursor_x_to_draw = font.size(text_buffer[cursor_y][:cursor_x])
         cursor_y_to_draw = cursor_y * font_height + 10
-        pygame.draw.rect(screen, cursor_color, (cursor_x_to_draw[0] + 10, cursor_y_to_draw, 10, font_height))
+        pygame.draw.rect(screen, cursor_color, (cursor_x_to_draw[0] + 10, cursor_y_to_draw, letter_width, font_height))
 
     # draw status line
     pygame.draw.rect(screen, status_line_color, (0, screen_height - status_line_height,
@@ -217,8 +224,6 @@ while running:
     screen.blit(
         command_display_text_surface, 
         (screen_width - 250, screen_height - status_line_height + status_line_height/5))
-
-    
 
     # Update screen
     pygame.display.flip()
