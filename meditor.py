@@ -32,24 +32,26 @@ last_blink_time = pygame.time.get_ticks()
 cursor_blink_interval = 500
 cursor_visible = True
     
-cursor_pos = (0, 0)  # (line, column)
+cursor_x = 0
+cursor_y = 0
+
 font_height = font.get_height()
 
-def move_right(cursor_pos):
-    cursor_pos = (cursor_pos[0] + 1, cursor_pos[1])
-    return cursor_pos
+def move_right(cursor_x):
+    cursor_x +=1 
+    return cursor_x
 
-def move_left(cursor_pos):
-    cursor_pos = (cursor_pos[0] - 1, cursor_pos[1])
-    return cursor_pos
+def move_left(cursor_x):
+    cursor_x -= 1
+    return cursor_x
 
-def move_down(cursor_pos):
-    cursor_pos = (cursor_pos[0], cursor_pos[1] + 1)
-    return cursor_pos
+def move_down(cursor_y):
+    cursor_y += 1
+    return cursor_y
 
-def move_up(cursor_pos):
-    cursor_pos = (cursor_pos[0], cursor_pos[1] - 1)
-    return cursor_pos
+def move_up(cursor_y):
+    cursor_y -= 1
+    return cursor_y
 
 
 # Główna pętla gry
@@ -71,13 +73,13 @@ while running:
                 # NORMAL MODE
                 if mode == 'normal':
                     if event.unicode == 'l':
-                        cursor_pos = move_right(cursor_pos)
+                        cursor_x = move_right(cursor_x)
                     elif event.unicode == 'h':
-                        cursor_pos = move_left(cursor_pos)
+                        cursor_x = move_left(cursor_x)
                     elif event.unicode == 'j':
-                        cursor_pos = move_down(cursor_pos)
+                        cursor_y = move_down(cursor_y)
                     elif event.unicode == 'k':
-                        cursor_pos = move_up(cursor_pos)
+                        cursor_y = move_up(cursor_y)
                     elif event.unicode == 'i':
                         mode = 'insert'
 
@@ -89,7 +91,10 @@ while running:
 
                     if not text_buffer:
                         text_buffer.append("")
-                    text_buffer[-1] += event.unicode
+                    # text_buffer[cursor_pos[1]].insert(cursor_pos[0], event.unicode)
+                    # text_buffer[cursor_pos[1]] = text_buffer[cursor_pos[1]][:cursor_pos[0]] + event.unicode + text_buffer[cursor_pos[1]][cursor_pos[0]:]
+                    # move_right(cursor_pos)
+                    
 
     # Background fill
     screen.fill(background_color)
@@ -106,16 +111,15 @@ while running:
     if current_time - last_blink_time > cursor_blink_interval:
         cursor_visible = not cursor_visible
         last_blink_time = pygame.time.get_ticks()
-        print(f"cursor_pos: {cursor_pos}")
 
     if True:
         cursor_color = (50, 168, 82)
-
-        cursor_pos_lol = font.size(text_buffer[cursor_pos[1]][:cursor_pos[0]])
-        cursor_x = cursor_pos[0] + 10
-        cursor_y = cursor_pos[1] * font_height + 10
-        print(f"cursor_y: {cursor_y}")
-        pygame.draw.rect(screen, cursor_color, (cursor_pos_lol[0] + 10, cursor_y, 10, font_height))
+        # print(f"cursor_x: {cursor_x}")
+        # print(f"cursor_y: {cursor_y}")
+        # print(f"text_buffer: {text_buffer}")
+        cursor_x_to_draw = font.size(text_buffer[cursor_y][:cursor_x])
+        cursor_y_to_draw = cursor_y * font_height + 10
+        pygame.draw.rect(screen, cursor_color, (cursor_x_to_draw[0] + 10, cursor_y_to_draw, 10, font_height))
 
     # draw status line
     pygame.draw.rect(screen, status_line_color, (0, screen_height - status_line_height,
