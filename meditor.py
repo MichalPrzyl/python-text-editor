@@ -46,11 +46,13 @@ def move_left(cursor_x):
     return cursor_x
 
 def move_down(cursor_y):
-    cursor_y += 1
+    if cursor_y <= len(text_buffer) - 2:
+        cursor_y += 1
     return cursor_y
 
 def move_up(cursor_y):
-    cursor_y -= 1
+    if cursor_y > 0:
+        cursor_y -= 1
     return cursor_y
 
 def move_one_word_forward():
