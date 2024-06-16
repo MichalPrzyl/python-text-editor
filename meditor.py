@@ -63,10 +63,12 @@ while running:
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:  # Return key
-                text_buffer.append("")
+                text_buffer.insert(cursor_y + 1, "")
+                cursor_y = move_down(cursor_y)
+                cursor_x = 0
             elif event.key == pygame.K_BACKSPACE:  # Backspace key
                 if text_buffer and text_buffer[-1]:
-                    text_buffer[-1] = text_buffer[-1][:-1]
+                    text_buffer[cursor_y] = text_buffer[cursor_y][:-1]
                 elif text_buffer:
                     text_buffer.pop()
             else:  # Add new chats
@@ -87,6 +89,9 @@ while running:
                 elif mode == 'insert':
                     if event.key == pygame.K_ESCAPE:
                         mode = 'normal'
+                    elif event.key == pygame.K_RSHIFT:
+                        pass
+
                     else:
                         if not text_buffer:
                             text_buffer.append("")
