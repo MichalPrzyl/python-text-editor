@@ -53,6 +53,28 @@ def move_up(cursor_y):
     cursor_y -= 1
     return cursor_y
 
+def move_one_word_forward():
+    line = text_buffer[cursor_y]
+    new_index = cursor_x
+
+    while line[new_index] != ' ':
+        if new_index <= len(line) - 2:
+            new_index += 1
+        else:
+            return new_index
+    return new_index + 1
+    
+def move_one_word_back():
+    line = text_buffer[cursor_y]
+    new_index = cursor_x
+
+    while line[new_index] != ' ':
+        if new_index <= len(line) - 2:
+            new_index -= 1
+        else:
+            return new_index
+    return new_index - 1
+    
 
 # Główna pętla gry
 running = True
@@ -87,11 +109,19 @@ while running:
                         cursor_y = move_up(cursor_y)
                     elif event.unicode == 'i':
                         mode = 'insert'
+                    elif event.unicode == 'w':
+                        cursor_x = move_one_word_forward()
+                    elif event.unicode == 'b':
+                        cursor_x = move_one_word_back()
+
                     elif event.unicode == 'o':
                         text_buffer.insert(cursor_y + 1, "")
                         cursor_y = move_down(cursor_y)
                         cursor_x = 0
                         mode = "insert"
+                    elif event.unicode == '0':
+                        cursor_x = 0
+
 
                 # INSERT MODE
                 elif mode == 'insert':
