@@ -45,15 +45,21 @@ def move_left(cursor_x):
     cursor_x -= 1
     return cursor_x
 
-def move_down(cursor_y):
+def move_down(cursor_x, cursor_y):
+    if cursor_x > len(text_buffer[cursor_y + 1]):
+        max_index = get_max_line_index(cursor_y + 1)
+        cursor_x = max_index
     if cursor_y <= len(text_buffer) - 2:
         cursor_y += 1
-    return cursor_y
+    return cursor_x, cursor_y
 
-def move_up(cursor_y):
+def move_up(cursor_x, cursor_y):
+    if cursor_x > len(text_buffer[cursor_y - 1]):
+        max_index = get_max_line_index(cursor_y - 1)
+        cursor_x = max_index
     if cursor_y > 0:
         cursor_y -= 1
-    return cursor_y
+    return cursor_x, cursor_y
 
 def move_one_word_forward():
     line = text_buffer[cursor_y]
@@ -77,8 +83,8 @@ def move_one_word_back():
             return new_index
     return new_index - 1
     
-def get_max_line_index():
-    line = text_buffer[cursor_y]
+def get_max_line_index(y_index):
+    line = text_buffer[y_index]
     return len(line) - 1
 
 def clear_command_prefix():
@@ -98,7 +104,7 @@ while running:
             if event.key == pygame.K_RETURN:  # Return key
                 text_buffer.insert(cursor_y + 1, text_buffer[cursor_y][cursor_x:])
                 text_buffer[cursor_y] = text_buffer[cursor_y][:cursor_x]
-                cursor_y = move_down(cursor_y)
+                cursor_x, cursor_y = move_down(cursor_x, cursor_y)
                 cursor_x = 0
             elif event.key == pygame.K_BACKSPACE:  # Backspace key
                 if text_buffer and text_buffer[-1]:
@@ -131,12 +137,12 @@ while running:
 
                     elif event.unicode == 'j':
                         for _ in range(int(prefix)):
-                            cursor_y = move_down(cursor_y)
+                            cursor_x, cursor_y = move_down(cursor_x, cursor_y)
                         command_prefix_number = clear_command_prefix()
 
                     elif event.unicode == 'k':
                         for _ in range(int(prefix)):
-                            cursor_y = move_up(cursor_y)
+                            cursor_x, cursor_y = move_up(cursor_x, cursor_y)
                         command_prefix_number = clear_command_prefix()
                         
                     elif event.unicode == 'i':
@@ -153,7 +159,7 @@ while running:
                         command_prefix_number = clear_command_prefix()
                     elif event.unicode == 'o':
                         text_buffer.insert(cursor_y + 1, "")
-                        cursor_y = move_down(cursor_y)
+                        cursor_x, cursor_y = move_down(cursor_x, cursor_y)
                         cursor_x = 0
                         mode = "insert"
                     elif event.unicode == '0':
