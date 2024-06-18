@@ -49,11 +49,15 @@ def move_left(cursor_x):
     return cursor_x
 
 def move_down(cursor_x, cursor_y):
+    # If next line doesn't exist, just return current coords
+    if cursor_y == len(text_buffer) - 1:
+        return cursor_x, cursor_y
+    # When line below is shorter, then move cursor_x to it's max length.
     if cursor_x > len(text_buffer[cursor_y + 1]):
         max_index = get_max_line_index(cursor_y + 1)
         cursor_x = max_index
-    if cursor_y <= len(text_buffer) - 2:
-        cursor_y += 1
+        
+    cursor_y += 1
     return cursor_x, cursor_y
 
 def move_up(cursor_x, cursor_y):
