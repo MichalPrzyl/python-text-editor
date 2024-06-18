@@ -123,9 +123,10 @@ while running:
             elif event.key == pygame.K_DELETE:  # Delete key
                 text_buffer[cursor_y] = text_buffer[cursor_y][:cursor_x] + text_buffer[cursor_y][cursor_x + 1 :]
                 
-            else:  # Add new chats
+            else:  # Add new chars
                 # NORMAL MODE
                 if mode == 'normal':
+                    # TODO: Refactor prefixes
                     if command_prefix_number:
                         command_prefix_number_str = [str(el) for el in command_prefix_number]
                         prefix = "".join(command_prefix_number_str)
@@ -164,20 +165,31 @@ while running:
                         for _ in range(int(prefix)):
                             cursor_x = move_one_word_back()
                         command_prefix_number = clear_command_prefix()
+                        
                     elif event.unicode == 'o':
                         text_buffer.insert(cursor_y + 1, "")
                         cursor_x, cursor_y = move_down(cursor_x, cursor_y)
                         cursor_x = 0
                         mode = "insert"
+
                     elif event.unicode == '0':
                         cursor_x = 0
+                        
                     elif event.unicode == '^':
                         cursor_x = 0
+
                     elif event.unicode == '$':
                         cursor_x = get_max_line_index()
+                        
                     elif pygame.K_0 <= event.key <= pygame.K_9:
-                        # print(f"event.key: {event.key}")
+                        # Pressed number is just char, for exmaple '3'.
                         pressed_number = event.key - pygame.K_0
+
+                        # If there are already 5 elements in prefix, remove the first one.
+                        if len(command_prefix_number) == 5:
+                            command_prefix_number.pop(0)
+                            
+                        # Add pressed number to prefix   
                         command_prefix_number.append(pressed_number)
 
                 # INSERT MODE
