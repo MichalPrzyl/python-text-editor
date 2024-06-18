@@ -38,11 +38,14 @@ cursor_y = 0
 font_height = font.get_height()
 
 def move_right(cursor_x):
-    cursor_x +=1 
+    line = text_buffer[cursor_y]
+    if cursor_x < len(line):
+        cursor_x +=1
     return cursor_x
 
 def move_left(cursor_x):
-    cursor_x -= 1
+    if cursor_x > 0:
+        cursor_x -= 1
     return cursor_x
 
 def move_down(cursor_x, cursor_y):
