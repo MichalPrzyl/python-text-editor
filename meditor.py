@@ -234,6 +234,12 @@ while running:
         command_display_text_surface, 
         (screen_width - 250, screen_height - status_line_height + status_line_height/5))
 
+    # Draw line and column position
+    line_column_display_text_surface = status_line_font.render(f'line: {cursor_y}, column: {cursor_x}', True, status_line_text_color)
+    screen.blit(
+        line_column_display_text_surface, 
+        (screen_width - 450, screen_height - status_line_height + status_line_height/5))
+
     # Update screen
     pygame.display.flip()
 
