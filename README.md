@@ -22,9 +22,7 @@ Those are the same as for VIM, so I won't be explaining those.
 ## Screenshoots
 
 <div align="center">
-
     <img src="./.readme/meditor.png" width=400/>
-
 </div>
 
 ## TODO
