@@ -10,8 +10,9 @@ during my spare time (which I don't have much 🥲)
 ## Description
 
 For now program has 2 modes:
-    - NORMAL MODE
-    - INSERT MODE
+- NORMAL MODE
+- INSERT MODE
+
 Those are the same as for VIM, so I won't be explaining those.
 
 ## Known bugs
