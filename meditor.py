@@ -25,7 +25,7 @@ class Meditor:
         self.mode = 'normal'
 
         # Buffor
-        self.text_buffer = ['hejka naklejka co tam ciekawego', "hejk"]
+        self.text_buffer = ['#include <stdio.h>', "", "", "int main(){"]
 
         # Status line
         self.status_line_height = 20

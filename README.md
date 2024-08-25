@@ -19,6 +19,11 @@ Those are the same as for VIM, so I won't be explaining those.
 - (FIXED) When cursor is on long line, and for example going line down, the X position of the cursor is still the same as before. It should changes.
 - (FIXED) When going from longer line to shorter, B (vim motion) doesn't work properly.
 
+## Screenshoots
+<div align="center">
+    <img src="./.readme/meditor.png" width=400/>
+</div>
+
 ## TODO
 
 - VISUAL MODE
