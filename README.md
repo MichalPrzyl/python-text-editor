@@ -20,8 +20,11 @@ Those are the same as for VIM, so I won't be explaining those.
 - (FIXED) When going from longer line to shorter, B (vim motion) doesn't work properly.
 
 ## Screenshoots
+
 <div align="center">
+
     <img src="./.readme/meditor.png" width=400/>
+
 </div>
 
 ## TODO
